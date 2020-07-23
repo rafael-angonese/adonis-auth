@@ -16,9 +16,12 @@ class AuthController {
 
         const { email, password } = request.all()
 
-        const token = await auth.attempt(email, password)
+        let token = await auth.attempt(email, password)
+
+        token.user = await User.query().select('username', 'email').where('email', email).fetch()
 
         return token
+
     }
 
 }
